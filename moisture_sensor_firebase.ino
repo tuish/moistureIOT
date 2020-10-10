@@ -68,9 +68,17 @@ void loop()
   unsigned long epochTime = timeClient.getEpochTime();
   struct tm *ptm = gmtime ((time_t *)&epochTime);
   int monthDay = ptm->tm_mday;
+  String Day = String(monthDay);
+  if(Day.length() <= 1){
+    Day = "0"+Day;
+  }
   int currentMonth = ptm->tm_mon+1;
+  String Month = String(currentMonth);
+  if(Month.length() <=1){
+    Month = "0"+Month;
+  }
   int currentYear = ptm->tm_year+1900;
-  date = String(currentYear) + "-" + String(currentMonth) + "-" + String(monthDay);
+  date = String(currentYear) + "-" + Month + "-" + Day;
   sdata = analogRead(vr);
   myString = String(sdata);
   Serial.println(date); 
