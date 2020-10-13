@@ -16,11 +16,11 @@ OakOLED oled;
 // Set these to run example.
 #define FIREBASE_HOST "moisture-sensor-be5c5.firebaseio.com"
 #define FIREBASE_AUTH "h0CVmmpPIbvmX2sqWTMJGFIW4kshuUF8X0iagP6u"
-#define WIFI_SSID "Galaxy"
-#define WIFI_PASSWORD "gbfd2135"
+#define WIFI_SSID "TUISH PREET"
+#define WIFI_PASSWORD "09198061"
 
 String date;
-String currTime;
+String sensorID = "2";
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
@@ -29,6 +29,7 @@ String myString;
 int vr = A0; // moisture sensor data connected 
              //it is the analog voltage corresponding to the resistance of the soil  
 int sdata = 0; // The variable resistor value will be stored in sdata.
+int y = 0;
 
  
 void setup()
@@ -56,7 +57,7 @@ void setup()
   int monthDay = ptm->tm_mday;
   int currentMonth = ptm->tm_mon+1;
   int currentYear = ptm->tm_year+1900;
-  date = String(currentYear) + "/" + String(currentMonth) + "/" + String(monthDay);
+  date = String(currentYear) + "-" + String(currentMonth) + "-" + String(monthDay);
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
   oled.begin();
 
@@ -79,11 +80,13 @@ void loop()
   }
   int currentYear = ptm->tm_year+1900;
   date = String(currentYear) + "-" + Month + "-" + Day;
+  String dir = date + "/" + sensorID;
   sdata = analogRead(vr);
-  myString = String(sdata);
+  y = map(sdata, 453, 856, 1000, 0);
+  myString = String(y);
   Serial.println(date); 
   Serial.println(myString); 
-  Firebase.setString(date, myString);
+  Firebase.setString(dir, myString);
   data();
   delay(1000);            
 }
@@ -96,19 +99,18 @@ void data(){
     oled.println("Moisture");
     oled.setTextSize(2);
     oled.setCursor(10, 12);
-    oled.println(String(sdata));
+    oled.println(String(y));
     oled.setTextSize(2);
     oled.setCursor(80, 12);
-    oled.println("ohm");
     
     
     oled.setTextSize(1);
     oled.setTextColor(1);
     oled.setCursor(3, 29);
-    oled.println("Date : ");
+    oled.println("Date ");
     oled.setTextSize(2);
     oled.setTextColor(1);
-    oled.setCursor(10,40 );
+    oled.setCursor(5,40 );
     oled.println(date);
     oled.display();
   }

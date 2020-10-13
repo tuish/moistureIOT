@@ -1,6 +1,4 @@
-/*
-    DEMO STYLE
-*/
+
 
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
@@ -180,6 +178,10 @@ a.article:hover {
         width: calc(100% - 250px);
     }
     #sidebarCollapse span {
+        display: none;
+    }
+
+    #dropdownMenu2 span{
         display: none;
     }
 }

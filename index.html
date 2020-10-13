@@ -23,6 +23,20 @@
     <script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
     <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!--firebase JS SDK always first before any tools-->
+    <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-analytics.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase.js"></script>
+    
+
 </head>
 
 <body>
@@ -66,9 +80,6 @@
                         <i class="fas fa-align-left"></i>
                         <span>Toggle Sidebar</span>
                     </button>
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fas fa-align-justify"></i>
-                    </button>
 
                 </div>
             </nav>
@@ -81,6 +92,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Date</th>
                     <th scope="col">Value</th>
+                    <th scope="col">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -88,25 +100,41 @@
                     <th scope="row">1</th>
                     <td>Sensor 1</td>
                     <td class="date">--</td>
-                    <td class="sensorData">--</td>
+                    <td id="data1">--</td>
+                    <td id="status1">--</td>
                   </tr>
                   <tr>
                     <th scope="row">2</th>
                     <td>Sensor 2</td>
                     <td class="date">--</td>
-                    <td class="sensorData">--</td>
+                    <td id="data2">--</td>
+                    <td id="status2">--</td>
                   </tr>
                   <tr>
                     <th scope="row">3</th>
                     <td>Sensor 3</td>
                     <td class="date">--</td>
-                    <td class="sensorData">--</td>
+                    <td id="data3">--</td>
+                    <td id="status3">--</td>
                   </tr>
                 </tbody>
               </table>
             <div class="line"></div>
+            
 
             <h2>Value History</h2>
+
+            <div class="btn-grp dropleft">
+                <button class="btn btn-dark float-right" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-align-justify"></i>
+                    <span>Sensor ID</span> 
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <button class="dropdown-item" type="button" id="chart1">sensor 1</button>
+                  <button class="dropdown-item" type="button" id="chart2">sensor 2</button>
+                  <button class="dropdown-item" type="button" id="chart3">sensor 3</button>
+                </div>
+            </div>
             <div class="container-fluid">
                 <canvas id="myChart"></canvas>
             </div>
@@ -115,22 +143,13 @@
     </div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <!-- jQuery Custom Scroller CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-    <!--firebase JS SDK always first before any tools-->
-    <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-analytics.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase.js"></script>
-    <script>
-        var dates = [], sensor1 = [];
+    
+    <!--<script>
+        var dates = [], sensor1 = [], sensor2 = [], sensor3 = [];
+        var sensor_data = sensor1;
         var date = document.getElementsByClassName("date");
-        var sensorData = document.getElementsByClassName("sensorData");
+        var upperLim = 191;
+        var lowerLim = 168;
         // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         var firebaseConfig = {
@@ -162,6 +181,8 @@
             query.on("value", function(snapshot) {
                 dates = [];
                 sensor1 = [];
+                sensor2 = [];
+                sensor3 = [];
                 snapshot.forEach(function(childSnapshot) {
                     
                     var key = childSnapshot.key;
@@ -169,41 +190,63 @@
 
                     var childData = childSnapshot.val();
                     dates.push(childSnapshot.key);
-                    sensor1.push(parseInt(childData));
-                    
+                    sensor1.push(parseInt(snapshot.child(key).child("1").val()));
+                    sensor2.push(parseInt(snapshot.child(key).child("2").val()));
+                    sensor3.push(parseInt(snapshot.child(key).child("3").val()));
                 });
                 apply();
-                getChart(dates, sensor1);
+                getChart(dates, sensor_data);
             });
 
         }
+        //determining status of each sensor
+        function status(value, id) {
+            if(value < lowerLim){
+                document.getElementById(id).innerHTML = "ALERT!";
+                document.getElementById(id).style.color = "#B22222";
+            }
+            else if(value < upperLim && value > lowerLim){
+                document.getElementById(id).innerHTML = "MAINTENANCE REQ!";
+                document.getElementById(id).style.color = "#FF8C00";
+            }
+            else{
+                document.getElementById(id).innerHTML = "GOOD";
+                document.getElementById(id).style.color = "#228B22";
+            }
+        }
         
-        
-        
+        //applying the values in the table
         function apply() {
             var len = (dates.length) - 1;
+            var value1 = sensor1[len];
+            var value2 = sensor2[len];
+            var value3 = sensor3[len];
             console.log(dates);
             console.log(sensor1);
             
             for (let index = 0; index < date.length; index++) {
-                date[index].innerHTML = dates[len];
-                sensorData[index].innerHTML = sensor1[len];
-                
+                date[index].innerHTML = dates[len];                
             }
-            
+            document.getElementById("data1").innerHTML = value1;
+            status(value1, "status1");
+            document.getElementById("data2").innerHTML = value2;
+            status(value2, "status2");
+            document.getElementById("data3").innerHTML = value3;
+            status(value3, "status3");
+            sensor_data = sensor1;
         }
         getData();
         
-        function getChart(dates, sensor1){
-            console.log(sensor1);
+        function getChart(dates, sensor_data){
+            console.log(sensor_data);
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: dates,
                     datasets: [{
-                        label: 'Resistance Values',
-                        data: sensor1,
+                        label: 'Moisture Values',
+                        data: sensor_data,
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1
@@ -221,6 +264,9 @@
             });
         }
 
+        function setChartData(arr) {
+            sensor_data = arr;
+        }
         
         
         $(document).ready(function () {
@@ -234,8 +280,8 @@
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
         });
-    </script>
-
+    </script>-->
+    <script src="script.js"></script>
 </body>
 
 </html>
